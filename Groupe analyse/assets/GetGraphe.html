@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+
+    <title>ANALYSE &mdash; Détection de communauté</title>
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    
+    <!-- Police -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet">
+      
+    <!-- Styles -->
+    <link href="css/core.min.css" rel="stylesheet">
+    <link href="css/app.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/force.css" rel="stylesheet">
+    
+  </head>
+  
+
+  
+
+  <body>
+
+    <!-- Barre Latéral -->
+    <aside class="sidebar sidebar-icons-right sidebar-icons-boxed sidebar-expand-lg">
+      <header class="sidebar-header">
+        <span class="logo">
+          <a><img src="img/icom2.png" alt="logo"></a>
+        </span>
+      </header>
+
+      <nav class="sidebar-navigation">
+        <ul class="menu">
+
+          
+
+          <li class="menu-item">
+            <a class="menu-link" href="http://localhost:10546/">
+              <span class="icon fa fa-home"></span>
+              <span class="title">Accueil</span>
+            </a>
+          </li>
+
+          <li class="menu-category">Interface</li>
+
+          <li class="menu-item">
+            <a class="menu-link" href="http://localhost:8050/">
+              <span class="icon fa fa-user"></span>
+              <span class="title">Groupe Interface</span>
+              <span class="arrow"></span>
+            </a>
+          </li>
+
+          <li class="menu-category">Data Visualisation</li>
+
+          <li class="menu-item">
+            <a class="menu-link" href="http://localhost:10500/">
+              <span class="icon fa fa-user"></span>
+              <span class="title">Groupe Data Visu 1</span>
+              <span class="arrow"></span>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a class="menu-link" href="#">
+              <span class="icon fa fa-user"></span>
+              <span class="title">Groupe Data Visu 2</span>
+              <span class="arrow"></span>
+            </a>
+
+            <ul class="menu-submenu">
+              <li class="menu-item">
+                <a class="menu-link" href="#">
+                  <span class="dot"></span>
+                  <span class="title">Page1</span>
+                </a>
+              </li>
+
+              <li class="menu-item">
+                <a class="menu-link" href="#">
+                  <span class="dot"></span>
+                  <span class="title">Page2</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="menu-category">Data Analyse</li>
+
+          <li class="menu-item active">
+            <a class="menu-link" href="#">
+              <span class="icon fa fa-user"></span>
+              <span class="title">Groupe Data Analyse</span>
+              <span class="arrow"></span>
+            </a>
+
+            <ul class="menu-submenu">
+              <li class="menu-item active">
+                <a class="menu-link" href="http://localhost:10546/get_graph">
+                  <span class="dot"></span>
+                  <span class="title">Détection de commuanuté</span>
+                </a>
+              </li>
+              
+              <li class="menu-item">
+                <a class="menu-link" href="http://localhost:10546/Topics">
+                  <span class="dot"></span>
+                  <span class="title">Détection de Topics</span>
+                </a>
+              </li>
+
+              <li class="menu-item">
+                <a class="menu-link" href="http://localhost:10546/get_prediction">
+                  <span class="dot"></span>
+                  <span class="title">Prédiction</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </nav>
+
+    </aside>
+    <!-- END Barre Latéral -->
+
+
+
+
+
+    <!-- Contenu  -->
+    
+    <main class="main-container">
+          <div class="main-content">
+
+            <div class="card">
+              <h4 class="card-title"><strong>Filtrage</strong></h4>
+    
+              <form data-provide="validation" data-disable="false">
+                <div class="card-body">
+    
+                  <div class="col-md-4">
+                    <label for="conf">Conférence</label>
+                    <select class="form-control" id="conf" name="conf">
+                        <option value="" selected></option>
+                      </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="year">Select year:</label>
+                    <select class="form-control" name="year" id="year">
+                      <option value="" selected></option>
+                    </select>
+                  </div>
+    
+                  <div class="col-md-6 col-xl-4">
+                      <label for="start_date">Du</label>
+                      <input type="date" class="form-control" name="start_date" id="start_date">
+                      <label for="end_date">Au</label>
+                      <input type="date" class="form-control" name="end_date" id="end_date">
+                  </div></br>
+    
+    
+                  <footer class="card-footer text-right">
+                      <button class="btn btn-primary" onclick="send_data()">Filtrer</button>
+                  </footer>
+    
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <h4 class="card-title"><strong>Détails du Noeud Sélectionné</strong></h4>
+
+              <div class="card-body">
+                <div>
+                  <label>Author: </label>
+                  <p id='author_name'></p>
+                  <label id="publication_label"></label>
+                  <ul id='publication_list'></ul>
+                </div> 
+                
+                <footer class="card-footer text-right">
+                  <button class="btn btn-primary" onclick="get_sub_graph()">Afficher le sous graphe du noeud sélectionné</button>
+              </footer>
+
+              </div>
+            </div> 
+
+            <div class="card">
+              <h4 class="card-title"><strong>Détection de Communauté</strong></h4>
+
+              <div class="card-body">
+                <div class="col-md-10 col-lg-10">
+                  <svg width="1300" height="1100"></svg>
+                </div>  
+              </div>
+            </div> 
+          </div> 
+        
+         
+
+      <!-- Footer -->
+      <footer class="site-footer">
+        <div class="row">
+          <div class="col-md-9">
+            <p class="text-center text-md-left">Projet Intégré 2020/2021 Groupe Analyse: Nathan Coustance, Yanis Benreguig, Louis Coste, Franck Doronzo, Romain Dudoit, Davy Darankoum</p>
+          </div>
+
+        </div>
+      </footer>
+      <!-- END Footer -->
+
+    </main>
+    <!--/Contenu-->
+
+
+
+
+
+
+
+    <!-- Scripts -->
+    <script src="js/core.min.js"></script>
+    <script src="js/app.min.js"></script>
+    <script src="js/script.min.js"></script>
+    <script type="text/javascript" src="js/force.js"></script>
+  </body>
+</html>
