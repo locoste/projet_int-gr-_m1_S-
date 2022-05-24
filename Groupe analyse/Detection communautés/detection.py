@@ -16,8 +16,6 @@ import Display
 from Cluster import Cluster
 from Graph import Graph
 
-# os.chdir("C:/Users/louis/OneDrive/Documents/GitHub/projetintegre/VF/Code/Detection communautées")
-
 import igraph
 
 global i
